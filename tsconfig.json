@@ -3,6 +3,10 @@
         "target": "ES2022",
         "module": "CommonJS",
         "moduleResolution": "node",
+        "ignoreDeprecations": "6.0",
+        "types": [
+            "node"
+        ],
         "lib": [
             "ES2022",
             "DOM"
