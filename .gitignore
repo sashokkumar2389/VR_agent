@@ -1,0 +1,28 @@
+# Node / npm
+node_modules/
+npm-debug.log*
+
+# TypeScript build output
+dist/
+
+# Playwright outputs (generated, not committed)
+playwright-report/
+test-results/
+
+# Reports (generated each run, except the trend log)
+reports/results.json
+reports/diff-report.html
+
+# Baseline update temp files
+reports/tmp/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Environment
+.env
+.env.local

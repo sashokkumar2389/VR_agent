@@ -1,0 +1,62 @@
+{
+    "globalDefaults": {
+        "viewport": {
+            "width": 1920,
+            "height": 1080
+        },
+        "maxDiffPixelRatio": 0.005,
+        "timeout": 60000,
+        "waitForNetworkIdle": true,
+        "disableAnimations": true
+    },
+    "pages": [
+        {
+            "name": "homepage",
+            "url": "https://kpmg.com/xx/en.html",
+            "maxDiffPixelRatio": 0.008,
+            "mcpInstructions": "Pause any hero carousel on the first slide",
+            "maskSelectors": [],
+            "waitConditions": []
+        },
+        {
+            "name": "industries",
+            "url": "https://kpmg.com/xx/en/what-we-do/industries.html",
+            "maxDiffPixelRatio": 0.005,
+            "mcpInstructions": "",
+            "maskSelectors": [],
+            "waitConditions": []
+        },
+        {
+            "name": "services",
+            "url": "https://kpmg.com/xx/en/what-we-do/services.html",
+            "maxDiffPixelRatio": 0.003,
+            "mcpInstructions": "",
+            "maskSelectors": [],
+            "waitConditions": []
+        },
+        {
+            "name": "insights",
+            "url": "https://kpmg.com/xx/en/insights.html",
+            "maxDiffPixelRatio": 0.005,
+            "mcpInstructions": "",
+            "maskSelectors": [],
+            "waitConditions": []
+        },
+        {
+            "name": "careers",
+            "url": "https://kpmg.com/xx/en/careers.html",
+            "maxDiffPixelRatio": 0.005,
+            "mcpInstructions": "",
+            "maskSelectors": [],
+            "waitConditions": []
+        },
+        {
+            "name": "careers-job-search",
+            "url": "https://kpmg.com/xx/en/careers/job-search.html",
+            "maxDiffPixelRatio": 0.01,
+            "mcpInstructions": "Wait for the job listing grid to fully render before capture",
+            "maskSelectors": [],
+            "waitConditions": []
+        }
+    ]
+}

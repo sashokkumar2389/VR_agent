@@ -1,0 +1,24 @@
+{
+    "name": "vr-agent",
+    "version": "0.1.0",
+    "description": "AI-powered Visual Regression Testing Agent using Playwright + MCP",
+    "private": true,
+    "scripts": {
+        "test": "npx playwright test",
+        "test:chromium": "npx playwright test --project=chromium",
+        "test:firefox": "npx playwright test --project=firefox",
+        "test:validate": "npx playwright test tests/validation/zero-diff.spec.ts",
+        "update-baselines": "npx playwright test --update-snapshots && npx ts-node utils/diff-reviewer.ts",
+        "diff-review": "npx ts-node utils/diff-reviewer.ts",
+        "report": "npx playwright show-report",
+        "typecheck": "tsc --noEmit",
+        "lint": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@playwright/mcp": "^0.0.30",
+        "@playwright/test": "^1.50.0",
+        "@types/node": "^20.0.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.0"
+    }
+}
