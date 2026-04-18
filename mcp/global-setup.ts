@@ -1,19 +1,10 @@
-import { getMCPClient } from './mcp-client';
-
 /**
  * Playwright globalSetup — runs once before all tests.
- * Starts the MCP server and verifies it is healthy.
+ *
+ * MCP connections are now created per-test (paired with the test's own
+ * BrowserContext), so there is no global server process to start here.
+ * This hook is kept for forward-compatibility and run-level logging.
  */
 export default async function globalSetup(): Promise<void> {
-  const client = getMCPClient();
-
-  try {
-    await client.initialize();
-    console.log('[globalSetup] MCP server started successfully.');
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[globalSetup] FATAL: MCP server failed to start — ${message}`);
-    // Re-throw so Playwright aborts the run rather than proceeding without MCP
-    throw err;
-  }
+  console.log('[globalSetup] VR_agent test run starting.');
 }

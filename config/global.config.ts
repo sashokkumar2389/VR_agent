@@ -42,9 +42,13 @@ interface RawPageConfig {
 
 const CONFIG_PATH = resolve(__dirname, 'pages.config.json');
 
+let _cachedConfig: PagesConfiguration | null = null;
+
 function loadRawConfig(): PagesConfiguration {
+    if (_cachedConfig) return _cachedConfig;
     const raw = readFileSync(CONFIG_PATH, 'utf-8');
-    return JSON.parse(raw) as PagesConfiguration;
+    _cachedConfig = JSON.parse(raw) as PagesConfiguration;
+    return _cachedConfig;
 }
 
 /**

@@ -116,8 +116,11 @@ async function waitForAllImages(page: Page, timeout: number): Promise<void> {
 }
 
 async function scrollToBottom(page: Page): Promise<void> {
-  // Incrementally scroll to trigger IntersectionObserver-based lazy loaders
-  await page.evaluate(async () => {
+  // Incrementally scroll to trigger IntersectionObserver-based lazy loaders.
+  // Capped at MAX_SCROLL_PX to prevent infinite-scroll pages from looping forever.
+  const MAX_SCROLL_PX = 50_000;
+
+  await page.evaluate(async (maxScroll: number) => {
     await new Promise<void>((resolve) => {
       const distance = 300;
       const delay = 80; // ms between scrolls
@@ -126,13 +129,13 @@ async function scrollToBottom(page: Page): Promise<void> {
       const timer = setInterval(() => {
         window.scrollBy(0, distance);
         scrolled += distance;
-        if (scrolled >= document.body.scrollHeight) {
+        if (scrolled >= document.body.scrollHeight || scrolled >= maxScroll) {
           clearInterval(timer);
           resolve();
         }
       }, delay);
     });
-  });
+  }, MAX_SCROLL_PX);
 
   // Brief pause after reaching the bottom
   await page.waitForTimeout(500);

@@ -1,7 +1,7 @@
 import { createInterface } from 'readline';
 import { existsSync, readFileSync, copyFileSync, readdirSync } from 'fs';
 import { resolve, basename } from 'path';
-import { execSync } from 'child_process';
+import { spawn } from 'child_process';
 import { baselinePath, getDiffOverlayPath } from './screenshot-helper';
 import { getPageConfigs } from '../config/global.config';
 
@@ -164,14 +164,14 @@ function openImages(paths: string[]): void {
     const existing = paths.filter(existsSync);
     if (existing.length === 0) return;
 
-    try {
-        const cmd = process.platform === 'darwin' ? 'open' : 'xdg-open';
-        for (const p of existing) {
-            execSync(`${cmd} "${p}"`, { stdio: 'ignore' });
+    const cmd = process.platform === 'darwin' ? 'open' : 'xdg-open';
+    for (const p of existing) {
+        try {
+            spawn(cmd, [p], { stdio: 'ignore', detached: true }).unref();
+        } catch {
+            // Non-fatal — user can navigate to paths listed in the console output
+            console.warn('[DiffReviewer] Could not auto-open images. Review paths listed above.');
         }
-    } catch {
-        // Non-fatal — user can navigate to paths listed in the console output
-        console.warn('[DiffReviewer] Could not auto-open images. Review paths listed above.');
     }
 }
 

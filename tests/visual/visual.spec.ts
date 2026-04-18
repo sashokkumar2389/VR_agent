@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { getPageConfigs } from '../../config/global.config';
-import { MCPOrchestrator } from '../../mcp/mcp-orchestrator';
-import { getMCPClient } from '../../mcp/mcp-client';
+import { MCPOrchestrator, TestResult } from '../../mcp/mcp-orchestrator';
+import { createMCPConnection, cleanupMCPPages } from '../../mcp/mcp-client';
 import { stabilizePage, StabilizationLevel } from '../../utils/page-stabilizer';
 import { logger } from '../../utils/logger';
 
@@ -29,6 +29,7 @@ function stabilizationLevel(retryIndex: number): StabilizationLevel {
 test.describe('Visual Regression', () => {
     for (const pageConfig of PAGE_CONFIGS) {
         test(`${pageConfig.name}`, async ({ page, browserName }, testInfo) => {
+            logger.flush(); // Reset log buffer — prevents cross-test bleed
             const level = stabilizationLevel(testInfo.retry);
 
             logger.info('visual.spec', `Starting test`, {
@@ -40,27 +41,39 @@ test.describe('Visual Regression', () => {
 
             // ------------------------------------------------------------------
             // Step 1 — MCP-guided navigation and cookie dismissal
-            // MCP drives AI-level instructions (cookie banners, carousel pausing).
+            // MCP creates a temporary page in the test's shared BrowserContext,
+            // navigates to the URL, and dismisses cookie banners.  Cookies
+            // carry over to the test's own page via the shared context.
             // If MCP is unavailable, Playwright continues independently.
             // ------------------------------------------------------------------
-            const mcpClient = getMCPClient();
-            if (mcpClient.isConnected()) {
-                const orchestrator = new MCPOrchestrator();
-                const result = await orchestrator.orchestratePageTest(pageConfig, browserName);
+            let mcpResult: TestResult | null = null;
+            let orchestrator: MCPOrchestrator | null = null;
+            try {
+                const connection = await createMCPConnection(page.context());
+                orchestrator = new MCPOrchestrator(connection);
+                mcpResult = await orchestrator.orchestratePageTest(pageConfig, browserName);
 
-                if (result.status === 'error') {
-                    logger.warn('visual.spec', `MCP orchestration warning — using Playwright-only stabilization`, {
+                // Close any extra pages MCP created in the shared context
+                await cleanupMCPPages(page.context(), page);
+
+                if (mcpResult.status === 'error') {
+                    logger.warn('visual.spec', 'MCP orchestration fallback — Playwright-only stabilization', {
                         page: pageConfig.name,
                     });
                 }
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.warn('visual.spec', 'MCP unavailable — using Playwright-only stabilization', {
+                    error: message,
+                });
+            }
 
-                // Attach MCP logs to the Playwright report for debugging
-                if (testInfo.retry > 0 || process.env['DEBUG'] === 'true') {
-                    await testInfo.attach('mcp-logs', {
-                        body: JSON.stringify(result.mcpLogs, null, 2),
-                        contentType: 'application/json',
-                    });
-                }
+            // Attach MCP logs to the Playwright report for debugging
+            if (mcpResult && (testInfo.retry > 0 || process.env['DEBUG'] === 'true')) {
+                await testInfo.attach('mcp-logs', {
+                    body: JSON.stringify(mcpResult.mcpLogs, null, 2),
+                    contentType: 'application/json',
+                });
             }
 
             // ------------------------------------------------------------------
@@ -93,6 +106,9 @@ test.describe('Visual Regression', () => {
                 animations: 'disabled',
                 mask: maskLocators.length > 0 ? maskLocators : undefined,
             });
+
+            // Log comparison result via compare-and-report template (Architecture §9.2)
+            orchestrator?.logComparisonResult(pageConfig, browserName, true);
 
             logger.info('visual.spec', `Test passed`, { page: pageConfig.name, browser: browserName });
 

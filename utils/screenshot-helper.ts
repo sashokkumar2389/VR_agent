@@ -71,9 +71,14 @@ export function saveBaseline(screenshot: Buffer, pageName: string, browser: stri
 /**
  * Compares a screenshot buffer against the stored baseline file.
  *
- * NOTE: This is a lightweight byte-level comparison used by the diff-reviewer
- * and update-baselines workflow. Pixel-accurate regression assertions are
- * performed by Playwright's own toHaveScreenshot() inside visual.spec.ts.
+ * WARNING: This is a byte-level comparison of raw PNG file buffers, NOT a
+ * pixel-level comparison. Two visually identical images with different PNG
+ * compression parameters will register as different. This means the
+ * diff-reviewer may surface false positives that Playwright's own
+ * `toHaveScreenshot()` (which decodes to raw pixels) would correctly pass.
+ *
+ * Use this only as a fast pre-filter. The authoritative regression assertion
+ * is `toHaveScreenshot()` in visual.spec.ts.
  */
 export function compareWithBaseline(
     actual: Buffer,

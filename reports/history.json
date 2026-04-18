@@ -703,6 +703,281 @@
           "durationMs": 4159
         }
       ]
+    },
+    {
+      "timestamp": "2026-04-18T04:27:42.990Z",
+      "results": [
+        {
+          "page": "homepage",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 8029
+        },
+        {
+          "page": "homepage",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 9744
+        },
+        {
+          "page": "industries",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4969
+        },
+        {
+          "page": "industries",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5112
+        },
+        {
+          "page": "services",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4455
+        },
+        {
+          "page": "services",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5052
+        },
+        {
+          "page": "insights",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 3741
+        },
+        {
+          "page": "insights",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4286
+        },
+        {
+          "page": "careers",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4497
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4267
+        },
+        {
+          "page": "careers",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5263
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5001
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-04-18T04:29:18.240Z",
+      "results": [
+        {
+          "page": "homepage",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 7371
+        },
+        {
+          "page": "homepage",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 9286
+        },
+        {
+          "page": "industries",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4921
+        },
+        {
+          "page": "industries",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5310
+        },
+        {
+          "page": "services",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4462
+        },
+        {
+          "page": "services",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4804
+        },
+        {
+          "page": "insights",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 3928
+        },
+        {
+          "page": "insights",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4640
+        },
+        {
+          "page": "careers",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4397
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4565
+        },
+        {
+          "page": "careers",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5038
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4512
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-04-18T04:30:46.641Z",
+      "results": []
+    },
+    {
+      "timestamp": "2026-04-18T04:31:26.183Z",
+      "results": [
+        {
+          "page": "homepage",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 7512
+        },
+        {
+          "page": "homepage",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 9329
+        },
+        {
+          "page": "industries",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4762
+        },
+        {
+          "page": "industries",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5124
+        },
+        {
+          "page": "services",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4571
+        },
+        {
+          "page": "services",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4786
+        },
+        {
+          "page": "insights",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 3977
+        },
+        {
+          "page": "insights",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4287
+        },
+        {
+          "page": "careers",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4430
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4119
+        },
+        {
+          "page": "careers",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 5153
+        },
+        {
+          "page": "careers-job-search",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4452
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-04-18T04:32:13.046Z",
+      "results": []
     }
   ]
 }

@@ -1,10 +1,36 @@
-import { spawn, ChildProcess } from 'child_process';
-import { writeFileSync, readFileSync, existsSync, unlinkSync } from 'fs';
-import { resolve } from 'path';
+import type { BrowserContext, Page } from '@playwright/test';
 
 // ---------------------------------------------------------------------------
-// Types
+// Types — internal @playwright/mcp runtime shapes
+//
+// The public Connection type only exposes { server, close() }.  At runtime
+// the internal class also exposes `context` which holds the registered MCP
+// tools and can execute them directly — we type that shape here.
 // ---------------------------------------------------------------------------
+
+interface MCPToolResult {
+    content: Array<{ type: string; text?: string; data?: string; mimeType?: string }>;
+    isError?: boolean;
+}
+
+interface MCPTool {
+    schema: { name: string; title?: string; description?: string };
+}
+
+interface MCPContext {
+    tools: MCPTool[];
+    run(tool: MCPTool, args: Record<string, unknown>): Promise<MCPToolResult>;
+}
+
+/**
+ * Internal connection shape — extends the public @playwright/mcp Connection
+ * with the `context` property that exists at runtime.
+ */
+export interface MCPConnection {
+    server: unknown;
+    context: MCPContext;
+    close(): Promise<void>;
+}
 
 export interface MCPResponse {
     content: string;
@@ -12,191 +38,103 @@ export interface MCPResponse {
     durationMs: number;
 }
 
-interface MCPServerInfo {
-    pid: number;
-    port: number;
+// ---------------------------------------------------------------------------
+// Connection factory
+// ---------------------------------------------------------------------------
+
+/**
+ * Creates an in-process MCP connection that shares the provided BrowserContext.
+ *
+ * MCP tools (browser_navigate, browser_click, browser_snapshot, …) will
+ * operate on pages within this context.  Because the test's own page lives
+ * in the same context, cookies and storage set by MCP carry over to the test.
+ */
+export async function createMCPConnection(
+    browserContext: BrowserContext,
+): Promise<MCPConnection> {
+    // Dynamic import — @playwright/mcp is an ESM-only package.
+    // TypeScript preserves import() as a native dynamic import when
+    // module=CommonJS, so Node.js CJS can load the ESM package at runtime.
+    const mod: { createConnection: Function } = await import('@playwright/mcp');
+
+    const connection = await mod.createConnection(
+        {},
+        () => Promise.resolve(browserContext),
+    );
+
+    return connection as unknown as MCPConnection;
 }
 
 // ---------------------------------------------------------------------------
-// Constants
+// Tool execution
 // ---------------------------------------------------------------------------
 
-const SERVER_INFO_PATH = resolve(__dirname, '../.mcp-server.json');
-const MCP_DEFAULT_PORT = 3001;
-const CONNECTION_TIMEOUT_MS = 15000;
-const PROMPT_TIMEOUT_MS = 30000;
+/**
+ * Calls a named MCP tool and returns a simplified response.
+ *
+ * Available tools include browser_navigate, browser_snapshot, browser_click,
+ * browser_type, browser_wait_for_event, etc.
+ */
+export async function callTool(
+    connection: MCPConnection,
+    toolName: string,
+    args: Record<string, unknown> = {},
+): Promise<MCPResponse> {
+    const start = Date.now();
 
-// ---------------------------------------------------------------------------
-// MCPClient
-// ---------------------------------------------------------------------------
+    const tool = connection.context.tools.find(
+        (t) => t.schema.name === toolName,
+    );
 
-export class MCPClient {
-    private serverProcess: ChildProcess | null = null;
-    private connected = false;
-    private port: number = MCP_DEFAULT_PORT;
-
-    /**
-     * Starts the MCP server and waits for it to be ready.
-     */
-    async initialize(): Promise<void> {
-        console.log('[MCPClient] Starting MCP server…');
-
-        this.serverProcess = spawn(
-            'npx',
-            ['@playwright/mcp', '--port', String(MCP_DEFAULT_PORT)],
-            {
-                stdio: ['ignore', 'pipe', 'pipe'],
-                detached: false,
-                env: { ...process.env },
-            }
-        );
-
-        this.port = MCP_DEFAULT_PORT;
-
-        // Capture stderr for diagnostics
-        this.serverProcess.stderr?.on('data', (chunk: Buffer) => {
-            if (process.env['DEBUG'] === 'true') {
-                console.debug('[MCPClient:stderr]', chunk.toString().trim());
-            }
-        });
-
-        this.serverProcess.on('error', (err) => {
-            console.error('[MCPClient] Server process error:', err.message);
-        });
-
-        // Persist PID so globalTeardown can clean up even if the process reference is lost
-        const info: MCPServerInfo = {
-            pid: this.serverProcess.pid ?? 0,
-            port: this.port,
+    if (!tool) {
+        return {
+            content: `MCP tool "${toolName}" not found`,
+            success: false,
+            durationMs: Date.now() - start,
         };
-        writeFileSync(SERVER_INFO_PATH, JSON.stringify(info, null, 2));
-
-        await this.waitForReady();
-        this.connected = true;
-        console.log(`[MCPClient] MCP server ready on port ${this.port}`);
     }
 
-    /**
-     * Sends a prompt to the MCP server and returns its response.
-     */
-    async sendPrompt(prompt: string): Promise<MCPResponse> {
-        if (!this.connected) {
-            throw new Error('[MCPClient] Not connected. Call initialize() first.');
-        }
+    try {
+        const result = await connection.context.run(tool, args);
 
-        const start = Date.now();
-        const endpoint = `http://localhost:${this.port}/prompt`;
+        const text = result.content
+            .filter((c) => c.type === 'text' && c.text)
+            .map((c) => c.text!)
+            .join('\n');
 
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), PROMPT_TIMEOUT_MS);
-
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt }),
-                signal: controller.signal,
-            });
-
-            if (!response.ok) {
-                const text = await response.text();
-                return {
-                    content: text,
-                    success: false,
-                    durationMs: Date.now() - start,
-                };
-            }
-
-            const json = (await response.json()) as { content?: string };
-            return {
-                content: json.content ?? '',
-                success: true,
-                durationMs: Date.now() - start,
-            };
-        } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : String(err);
-            return {
-                content: message,
-                success: false,
-                durationMs: Date.now() - start,
-            };
-        } finally {
-            clearTimeout(timer);
-        }
-    }
-
-    /**
-     * Gracefully shuts down the MCP server.
-     */
-    async shutdown(): Promise<void> {
-        this.connected = false;
-
-        if (this.serverProcess && !this.serverProcess.killed) {
-            console.log('[MCPClient] Shutting down MCP server…');
-            this.serverProcess.kill('SIGTERM');
-            await new Promise<void>((resolve) => setTimeout(resolve, 1000));
-        }
-
-        // Also clean up any orphaned process from a previous run
-        if (existsSync(SERVER_INFO_PATH)) {
-            try {
-                const info = JSON.parse(readFileSync(SERVER_INFO_PATH, 'utf-8')) as MCPServerInfo;
-                if (info.pid && info.pid !== this.serverProcess?.pid) {
-                    process.kill(info.pid, 'SIGTERM');
-                }
-            } catch {
-                // Process may already be gone
-            }
-            unlinkSync(SERVER_INFO_PATH);
-        }
-
-        this.serverProcess = null;
-    }
-
-    /**
-     * Returns true if the MCP server connection is active.
-     */
-    isConnected(): boolean {
-        return this.connected;
-    }
-
-    // ---------------------------------------------------------------------------
-    // Private helpers
-    // ---------------------------------------------------------------------------
-
-    private async waitForReady(): Promise<void> {
-        const deadline = Date.now() + CONNECTION_TIMEOUT_MS;
-        const healthUrl = `http://localhost:${this.port}/health`;
-
-        while (Date.now() < deadline) {
-            try {
-                const res = await fetch(healthUrl);
-                if (res.ok) return;
-            } catch {
-                // Server not yet up; keep waiting
-            }
-            await new Promise<void>((resolve) => setTimeout(resolve, 500));
-        }
-
-        throw new Error(
-            `[MCPClient] MCP server did not become ready within ${CONNECTION_TIMEOUT_MS}ms`
-        );
+        return {
+            content: text,
+            success: !result.isError,
+            durationMs: Date.now() - start,
+        };
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        return {
+            content: message,
+            success: false,
+            durationMs: Date.now() - start,
+        };
     }
 }
 
 // ---------------------------------------------------------------------------
-// Singleton accessor
+// Cleanup
 // ---------------------------------------------------------------------------
 
-let _client: MCPClient | null = null;
-
-export function getMCPClient(): MCPClient {
-    if (!_client) {
-        _client = new MCPClient();
+/**
+ * Closes extra pages MCP may have created inside the shared BrowserContext,
+ * leaving only the test's original page untouched.
+ *
+ * NOTE: We intentionally do NOT call connection.close() because that would
+ * invoke browserContext.close() and tear down the test's own context.
+ */
+export async function cleanupMCPPages(
+    browserContext: BrowserContext,
+    testPage: Page,
+): Promise<void> {
+    for (const p of browserContext.pages()) {
+        if (p !== testPage) {
+            await p.close().catch(() => { /* ignore */ });
+        }
     }
-    return _client;
-}
-
-export function resetMCPClient(): void {
-    _client = null;
 }

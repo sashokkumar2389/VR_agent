@@ -389,6 +389,9 @@ VR_agent/
 │   └── firefox/                    # Firefox baseline images
 │       └── {page-name}.png
 │
+├── reporters/                      # Custom Playwright reporters
+│   └── visual-diff-reporter.ts     # Diff panel HTML + trend history writer
+│
 ├── reports/                        # Generated output (gitignored except trends)
 │   ├── history.json                # Historical trend tracking data
 │   └── (generated HTML/diff files)

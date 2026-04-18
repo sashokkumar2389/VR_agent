@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
     testDir: './tests',
+    testIgnore: ['**/validation/**'],
     snapshotDir: './baselines',
     // Stores baselines at: baselines/{projectName}/{pageName}.png
     snapshotPathTemplate: '{snapshotDir}/{projectName}/{arg}{ext}',
