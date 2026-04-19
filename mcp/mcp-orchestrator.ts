@@ -26,18 +26,6 @@ export interface MCPLog {
 }
 
 // ---------------------------------------------------------------------------
-// Cookie dismiss patterns (ADR-017: reject all / essential only)
-// ---------------------------------------------------------------------------
-
-const COOKIE_BUTTON_PATTERNS = [
-  /reject\s*all/i,
-  /essential\s*only/i,
-  /decline\b/i,
-  /necessary\s*only/i,
-  /only\s*necessary/i,
-];
-
-// ---------------------------------------------------------------------------
 // Template hydration (kept for documentation / logging)
 // ---------------------------------------------------------------------------
 
@@ -91,7 +79,9 @@ export class MCPOrchestrator {
 
     try {
       await this.executeNavigation(pageConfig);
-      await this.executeCookieDismissal();
+      // Cookie banners are suppressed via pre-injected consent cookies
+      // (config/cookies.json → context.addCookies in visual.spec.ts).
+      // No runtime dismissal needed.
       await this.executePageInstructions(pageConfig);
 
       return {
@@ -162,43 +152,6 @@ export class MCPOrchestrator {
     logger.info('MCPOrchestrator', `Navigated to ${pageConfig.url}`);
   }
 
-  private async executeCookieDismissal(): Promise<void> {
-    // Snapshot the page accessibility tree to find cookie buttons
-    const snapshot = await this.callAndLog('browser_snapshot', {});
-
-    if (!snapshot.success) {
-      logger.warn(
-        'MCPOrchestrator',
-        'Snapshot failed during cookie check',
-      );
-      return;
-    }
-
-    const button = this.findCookieButton(snapshot.content);
-
-    if (!button) {
-      logger.debug('MCPOrchestrator', 'No cookie banner found');
-      return;
-    }
-
-    const click = await this.callAndLog('browser_click', {
-      element: button.element,
-      ref: button.ref,
-    });
-
-    if (click.success) {
-      logger.info(
-        'MCPOrchestrator',
-        `Cookie banner dismissed: "${button.element}"`,
-      );
-    } else {
-      logger.warn(
-        'MCPOrchestrator',
-        `Cookie click failed: ${click.content}`,
-      );
-    }
-  }
-
   private async executePageInstructions(
     pageConfig: PageConfig,
   ): Promise<void> {
@@ -212,31 +165,6 @@ export class MCPOrchestrator {
       page: pageConfig.name,
       instructions: pageConfig.mcpInstructions,
     });
-  }
-
-  // -----------------------------------------------------------------------
-  // Snapshot parsing
-  // -----------------------------------------------------------------------
-
-  private findCookieButton(
-    snapshot: string,
-  ): { element: string; ref: string } | null {
-    const lines = snapshot.split('\n');
-
-    for (const line of lines) {
-      // Snapshot format: - ref=<id> button "Button Text"
-      const match = line.match(/ref=([\w.]+)\s+button\s+"([^"]+)"/i);
-      if (!match) continue;
-
-      const ref = match[1]!;
-      const text = match[2]!;
-
-      if (COOKIE_BUTTON_PATTERNS.some((p) => p.test(text))) {
-        return { element: text, ref };
-      }
-    }
-
-    return null;
   }
 
   // -----------------------------------------------------------------------

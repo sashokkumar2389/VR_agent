@@ -12,6 +12,9 @@ test-results/
 # Reports (generated each run, except the trend log)
 reports/results.json
 reports/diff-report.html
+reports/runs/
+reports/latest
+reports/index.html
 
 # Baseline update temp files
 reports/tmp/

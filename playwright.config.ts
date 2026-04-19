@@ -13,7 +13,12 @@ export default defineConfig({
     timeout: 60000,
 
     reporter: [
-        ['html', { open: 'never' }],
+        ['html', {
+            open: 'never',
+            outputFolder: process.env['VR_RUN_DIR']
+                ? `${process.env['VR_RUN_DIR']}/playwright-report`
+                : 'playwright-report',
+        }],
         ['json', { outputFile: 'reports/results.json' }],
         ['./reporters/visual-diff-reporter.ts'],
     ],

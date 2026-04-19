@@ -1,0 +1,23 @@
+{
+    "comment": "Pre-set KPMG cookie consent cookies to suppress the banner. Update values if the consent platform changes.",
+    "cookies": [
+        {
+            "name": "OptanonAlertBoxClosed",
+            "value": "2026-01-01T00:00:00.000Z",
+            "domain": ".kpmg.com",
+            "path": "/"
+        },
+        {
+            "name": "OptanonConsent",
+            "value": "isGpcEnabled=0&datestamp=Sat+Jan+01+2026&version=202409.2.0&groups=1%3A1%2C2%3A0%2C3%3A0%2C4%3A0",
+            "domain": ".kpmg.com",
+            "path": "/"
+        },
+        {
+            "name": "eupubconsent-v2",
+            "value": "CQIBkkAQIBkkAAcABBENBQFgAAAAAAAAAAAAAAAAAA.YAAAAAAAAAAA",
+            "domain": ".kpmg.com",
+            "path": "/"
+        }
+    ]
+}

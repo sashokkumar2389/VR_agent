@@ -1,9 +1,30 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { getPageConfigs } from '../../config/global.config';
 import { MCPOrchestrator, TestResult } from '../../mcp/mcp-orchestrator';
 import { createMCPConnection, cleanupMCPPages } from '../../mcp/mcp-client';
 import { stabilizePage, StabilizationLevel } from '../../utils/page-stabilizer';
 import { logger } from '../../utils/logger';
+
+// ---------------------------------------------------------------------------
+// Cookie injection — suppress KPMG consent banners deterministically
+// ---------------------------------------------------------------------------
+
+interface CookieEntry {
+    name: string;
+    value: string;
+    domain: string;
+    path: string;
+}
+
+interface CookiesConfig {
+    cookies: CookieEntry[];
+}
+
+const COOKIES_PATH = resolve(__dirname, '../../config/cookies.json');
+const CONSENT_COOKIES: CookieEntry[] =
+    (JSON.parse(readFileSync(COOKIES_PATH, 'utf-8')) as CookiesConfig).cookies;
 
 // ---------------------------------------------------------------------------
 // Data-driven visual regression test suite
@@ -27,6 +48,11 @@ function stabilizationLevel(retryIndex: number): StabilizationLevel {
 }
 
 test.describe('Visual Regression', () => {
+    // Inject consent cookies before each test so the banner never appears
+    test.beforeEach(async ({ context }) => {
+        await context.addCookies(CONSENT_COOKIES);
+    });
+
     for (const pageConfig of PAGE_CONFIGS) {
         test(`${pageConfig.name}`, async ({ page, browserName }, testInfo) => {
             logger.flush(); // Reset log buffer — prevents cross-test bleed

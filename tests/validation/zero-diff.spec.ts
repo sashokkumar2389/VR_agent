@@ -1,9 +1,29 @@
 import { test, expect } from '@playwright/test';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
+import { resolve } from 'path';
 import { getPageConfigs } from '../../config/global.config';
 import { baselinePath } from '../../utils/screenshot-helper';
 import { stabilizePage } from '../../utils/page-stabilizer';
 import { logger } from '../../utils/logger';
+
+// ---------------------------------------------------------------------------
+// Cookie injection — suppress KPMG consent banners deterministically
+// ---------------------------------------------------------------------------
+
+interface CookieEntry {
+    name: string;
+    value: string;
+    domain: string;
+    path: string;
+}
+
+interface CookiesConfig {
+    cookies: CookieEntry[];
+}
+
+const COOKIES_PATH = resolve(__dirname, '../../config/cookies.json');
+const CONSENT_COOKIES: CookieEntry[] =
+    (JSON.parse(readFileSync(COOKIES_PATH, 'utf-8')) as CookiesConfig).cookies;
 
 // ---------------------------------------------------------------------------
 // Zero-diff validation suite — Phase 0 success criterion
@@ -24,6 +44,11 @@ const PAGE_CONFIGS = getPageConfigs();
 const BROWSERS = ['chromium', 'firefox'];
 
 test.describe('Zero-diff baseline validation', () => {
+    // Inject consent cookies before each test so the banner never appears
+    test.beforeEach(async ({ context }) => {
+        await context.addCookies(CONSENT_COOKIES);
+    });
+
     // Guard: verify all baseline files exist before running any comparison
     test('all baseline files exist', () => {
         const missing: string[] = [];

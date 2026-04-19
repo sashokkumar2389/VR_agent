@@ -10,7 +10,8 @@
         "test:validate": "npx playwright test --config=playwright.validate.config.ts",
         "update-baselines": "npx playwright test; npx ts-node utils/diff-reviewer.ts",
         "diff-review": "npx ts-node utils/diff-reviewer.ts",
-        "report": "npx playwright show-report",
+        "report": "npx playwright show-report reports/latest/playwright-report",
+        "report:index": "open reports/index.html",
         "typecheck": "tsc --noEmit",
         "lint": "tsc --noEmit"
     },
