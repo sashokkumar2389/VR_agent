@@ -17,6 +17,7 @@ import {
     lstatSync,
     unlinkSync,
     copyFileSync,
+    cpSync,
 } from 'fs';
 import { resolve, relative } from 'path';
 import { TrendHistory, TrendRun, TrendResult } from '../utils/trend-writer';
@@ -79,9 +80,6 @@ class VisualDiffReporter implements Reporter {
 
         mkdirSync(REPORTS_DIR, { recursive: true });
         mkdirSync(this.runDir, { recursive: true });
-
-        // Expose the run directory so playwright.config.ts reporters can use it
-        process.env['VR_RUN_DIR'] = this.runDir;
     }
 
     onTestEnd(test: TestCase, result: TestResult): void {
@@ -125,6 +123,7 @@ class VisualDiffReporter implements Reporter {
     onEnd(_result: FullResult): void {
         this.writeDiffReport();
         this.copyResultsJson();
+        this.copyPlaywrightReport();
         this.updateTrendHistory();
         this.updateLatestSymlink();
         this.pruneOldRuns();
@@ -223,6 +222,21 @@ class VisualDiffReporter implements Reporter {
         const src = resolve(REPORTS_DIR, 'results.json');
         if (existsSync(src)) {
             copyFileSync(src, resolve(this.runDir, 'results.json'));
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Copy Playwright HTML report into the run folder
+    // Our reporter is listed last in config, so the HTML reporter has already
+    // finished writing by the time our onEnd runs.
+    // ---------------------------------------------------------------------------
+
+    private copyPlaywrightReport(): void {
+        const src = resolve(__dirname, '../playwright-report');
+        const dest = resolve(this.runDir, 'playwright-report');
+
+        if (existsSync(src)) {
+            cpSync(src, dest, { recursive: true });
         }
     }
 

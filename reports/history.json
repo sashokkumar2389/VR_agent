@@ -1,475 +1,194 @@
 {
   "runs": [
     {
-      "timestamp": "2026-04-19T04:28:14.624Z",
+      "timestamp": "2026-04-19T06:20:37.428Z",
       "results": [
         {
           "page": "homepage",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 11265
+          "durationMs": 7595
         },
         {
           "page": "homepage",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 12717
+          "durationMs": 8797
         },
         {
           "page": "industries",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 4762
+          "durationMs": 4824
         },
         {
           "page": "industries",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 5048
+          "durationMs": 5519
         },
         {
           "page": "services",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 6622
+          "durationMs": 4414
+        },
+        {
+          "page": "insights",
+          "browser": "chromium",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 3364
         },
         {
           "page": "services",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 7074
-        },
-        {
-          "page": "insights",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4320
-        },
-        {
-          "page": "insights",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5055
+          "durationMs": 5433
         },
         {
           "page": "careers",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 6373
+          "durationMs": 4200
         },
         {
-          "page": "careers",
+          "page": "insights",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 6031
+          "durationMs": 3857
         },
         {
           "page": "careers-job-search",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 5631
+          "durationMs": 3957
+        },
+        {
+          "page": "careers",
+          "browser": "firefox",
+          "status": "pass",
+          "diffPixelRatio": 0,
+          "durationMs": 4729
         },
         {
           "page": "careers-job-search",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 5620
+          "durationMs": 4296
         }
       ]
     },
     {
-      "timestamp": "2026-04-19T04:30:24.986Z",
-      "results": [
-        {
-          "page": "homepage",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 6672
-        },
-        {
-          "page": "homepage",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 8378
-        },
-        {
-          "page": "industries",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4750
-        },
-        {
-          "page": "industries",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5315
-        },
-        {
-          "page": "services",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4373
-        },
-        {
-          "page": "insights",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3367
-        },
-        {
-          "page": "services",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4607
-        },
-        {
-          "page": "careers",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4028
-        },
-        {
-          "page": "insights",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3952
-        },
-        {
-          "page": "careers-job-search",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4060
-        },
-        {
-          "page": "careers",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5108
-        },
-        {
-          "page": "careers-job-search",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3993
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-04-19T04:32:13.274Z",
-      "results": [
-        {
-          "page": "homepage",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 6895
-        },
-        {
-          "page": "homepage",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 8525
-        },
-        {
-          "page": "industries",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4791
-        },
-        {
-          "page": "industries",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5073
-        },
-        {
-          "page": "services",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4149
-        },
-        {
-          "page": "insights",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3255
-        },
-        {
-          "page": "services",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4780
-        },
-        {
-          "page": "careers",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3820
-        },
-        {
-          "page": "insights",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4071
-        },
-        {
-          "page": "careers-job-search",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3711
-        },
-        {
-          "page": "careers",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4460
-        },
-        {
-          "page": "careers-job-search",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4680
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-04-19T05:01:01.859Z",
+      "timestamp": "2026-04-19T06:22:26.902Z",
       "results": [
         {
           "page": "all baseline files exist",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 63
+          "durationMs": 51
         },
         {
           "page": "all baseline files exist",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 522
+          "durationMs": 507
         },
         {
           "page": "homepage — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 6070
+          "durationMs": 5782
         },
         {
           "page": "homepage — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 7037
+          "durationMs": 6938
         },
         {
           "page": "industries — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 4327
+          "durationMs": 4595
         },
         {
           "page": "industries — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 5194
+          "durationMs": 5404
         },
         {
           "page": "services — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 4095
+          "durationMs": 4131
         },
         {
           "page": "insights — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 3099
+          "durationMs": 3705
         },
         {
           "page": "services — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 4331
+          "durationMs": 5043
         },
         {
           "page": "careers — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 3636
+          "durationMs": 3914
         },
         {
           "page": "insights — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 3226
+          "durationMs": 3515
         },
         {
           "page": "careers-job-search — zero diff",
           "browser": "chromium",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 3446
+          "durationMs": 3529
         },
         {
           "page": "careers — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 4021
+          "durationMs": 3961
         },
         {
           "page": "careers-job-search — zero diff",
           "browser": "firefox",
           "status": "pass",
           "diffPixelRatio": 0,
-          "durationMs": 3700
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-04-19T05:01:45.349Z",
-      "results": [
-        {
-          "page": "all baseline files exist",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 70
-        },
-        {
-          "page": "all baseline files exist",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 538
-        },
-        {
-          "page": "homepage — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5651
-        },
-        {
-          "page": "homepage — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 6435
-        },
-        {
-          "page": "industries — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4410
-        },
-        {
-          "page": "industries — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4554
-        },
-        {
-          "page": "services — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4150
-        },
-        {
-          "page": "services — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 4441
-        },
-        {
-          "page": "insights — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 5580
-        },
-        {
-          "page": "insights — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3370
-        },
-        {
-          "page": "careers — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3598
-        },
-        {
-          "page": "careers — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3966
-        },
-        {
-          "page": "careers-job-search — zero diff",
-          "browser": "chromium",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3381
-        },
-        {
-          "page": "careers-job-search — zero diff",
-          "browser": "firefox",
-          "status": "pass",
-          "diffPixelRatio": 0,
-          "durationMs": 3652
+          "durationMs": 3954
         }
       ]
     }

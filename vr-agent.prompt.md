@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: true
 description: Visual Regression Testing Agent — phased implementation driver for the VR_agent project (Playwright + MCP)
 tools:
   - read_file
@@ -7,7 +7,6 @@ tools:
   - replace_string_in_file
   - run_in_terminal
   - file_search
-  - grep_search
 ---
 
 # Visual Regression Testing Agent — Copilot Agent Prompt

@@ -32,5 +32,11 @@
     "exclude": [
         "node_modules",
         "dist"
-    ]
+    ],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS",
+            "moduleResolution": "Node"
+        }
+    }
 }
