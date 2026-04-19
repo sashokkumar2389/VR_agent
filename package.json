@@ -7,7 +7,7 @@
         "test": "npx playwright test",
         "test:chromium": "npx playwright test --project=chromium",
         "test:firefox": "npx playwright test --project=firefox",
-        "test:validate": "npx playwright test tests/validation/zero-diff.spec.ts",
+        "test:validate": "npx playwright test --config=playwright.validate.config.ts",
         "update-baselines": "npx playwright test; npx ts-node utils/diff-reviewer.ts",
         "diff-review": "npx ts-node utils/diff-reviewer.ts",
         "report": "npx playwright show-report",

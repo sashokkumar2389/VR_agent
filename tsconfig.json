@@ -3,7 +3,7 @@
         "target": "ES2022",
         "module": "CommonJS",
         "moduleResolution": "node",
-        "ignoreDeprecations": "6.0",
+        "ignoreDeprecations": "5.0",
         "types": [
             "node"
         ],
@@ -27,7 +27,8 @@
         "utils/**/*.ts",
         "mcp/**/*.ts",
         "reporters/**/*.ts",
-        "playwright.config.ts"
+        "playwright.config.ts",
+        "playwright.validate.config.ts"
     ],
     "exclude": [
         "node_modules",
