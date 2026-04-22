@@ -44,9 +44,13 @@ npm run report
 | `npm test` | Run all visual regression tests |
 | `npm run test:chromium` | Chromium only |
 | `npm run test:firefox` | Firefox only |
+| `npm run test:validate` | Run zero-diff validation suite (Phase 0 check) |
 | `npm run update-baselines` | Regenerate all baselines (human approval required) |
-| `npm run report` | Open Playwright HTML report |
+| `npm run diff-review` | Standalone interactive diff-review without re-running tests |
+| `npm run report` | Open Playwright HTML report for the latest run |
+| `npm run report:index` | Open aggregated multi-run index report |
 | `npm run typecheck` | TypeScript type check with zero errors |
+| `npm run lint` | Alias for typecheck |
 
 ## Debug Mode
 
@@ -68,14 +72,26 @@ npm run update-baselines
 ## Project Structure
 
 ```
-├── config/            # pages.config.json + global.config.ts
-├── tests/visual/      # Data-driven visual.spec.ts
-├── utils/             # page-stabilizer, screenshot-helper, diff-reviewer, logger
-├── mcp/               # MCP client, orchestrator, prompt templates
-├── baselines/         # Stored baseline PNGs (committed to Git)
-├── reports/           # history.json (committed); generated reports (gitignored)
-├── reporters/         # Custom Playwright reporter with diff panel
-└── docs/              # ARCHITECTURE.md, SPRINT_PLAN.md
+├── config/                  # pages.config.json + global.config.ts
+├── tests/
+│   ├── visual/              # Data-driven visual.spec.ts
+│   └── validation/          # zero-diff.spec.ts (Phase 0 determinism check)
+├── utils/                   # page-stabilizer, screenshot-helper, diff-reviewer, trend-writer, logger
+├── mcp/
+│   ├── mcp-client.ts        # Playwright MCP connection helpers
+│   ├── mcp-orchestrator.ts  # Orchestrates navigation + cookie dismissal per test
+│   ├── global-setup.ts      # Run-level setup hook
+│   ├── global-teardown.ts   # Run-level teardown hook
+│   └── prompts/             # Prompt templates (.prompt.md) for MCP tools
+├── baselines/               # Stored baseline PNGs — chromium/ and firefox/ (committed to Git)
+├── reports/
+│   ├── history.json         # Trend history across all runs (committed)
+│   ├── index.html           # Aggregated multi-run report
+│   ├── latest -> runs/<ts>/ # Symlink to most recent run (gitignored)
+│   └── runs/                # Archived run folders, auto-pruned at 10 (gitignored)
+├── reporters/               # visual-diff-reporter.ts — custom reporter with diff panel + trend tracking
+├── vr-agent.prompt.md       # Root-level agent prompt
+└── docs/                    # ARCHITECTURE.md, SPRINT_PLAN.md
 ```
 
 ## Phase 0 Success Criterion
